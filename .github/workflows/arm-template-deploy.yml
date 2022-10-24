@@ -6,6 +6,11 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  resource_group_name: rg-github-actions
+  location: westus2
+  subscription_id: 7bbeb4e8-a5e2-43d4-895e-ee47d0f76020
+
 jobs:
   armDeploy:
     runs-on: ubuntu-latest
@@ -22,43 +27,30 @@ jobs:
       #   uses: Azure/cli@v1
       #   with:
       #     inlinescript: |
-      #       az deployment sub create --location "westus2" --template-file ./arm-templates/resource-group.json
+      #       az deployment sub create --location "${{ env.location }}" --template-file ./arm-templates/resource-group.json
 
       - name: Deploy Resource Group
         uses: Azure/arm-deploy@v1
         with:
           scope: subscription
-          subscriptionId: 7bbeb4e8-a5e2-43d4-895e-ee47d0f76020
-          region: westus3
+          subscriptionId: ${{ env.subscription_id }}
+          region: ${{ env.location }}
           template: ./arm-templates/resource-group.json
-          parameters:
-            location=westus2
-            resourceGroupName=rg-github-actions
-          deploymentName: rg-github-actions
+          parameters: location=${{ env.location }}
+            resourceGroupName=${{ env.resource_group_name }}
+          deploymentName: ${{ env.resource_group_name }}
 
       - name: Deploy Storage Account
         uses: Azure/arm-deploy@v1
         id: storageAccountDeploy
         with:
           scope: resourcegroup
-          resourceGroupName: rg-github-actions
-          subscriptionId: 7bbeb4e8-a5e2-43d4-895e-ee47d0f76020
+          resourceGroupName: ${{ env.resource_group_name }}
+          subscriptionId: ${{ env.subscription_id}}
           template: ./arm-templates/storage-account.json
-          parameters: 
-            ./arm-templates/storage-account.parameters.json
+          parameters: ./arm-templates/storage-account.parameters.json
             storageAccountName=globostg9876
             location=westus3
           deploymentMode: incremental
 
       # - run: echo ${{ steps.storageAccountDeploy.outputs.blobUri }}
-      
-      - name: Deploy Virtual Machine
-        uses: Azure/arm-deploy@v1
-        with:
-          scope: resourcegroup
-          resourceGroupName: rg-github-actions
-          subscriptionId: 7bbeb4e8-a5e2-43d4-895e-ee47d0f76020
-          template: ./arm-templates/virtual-machine.json
-          parameters: 
-            adminPassword="My$ecureP@ssword!"
-          deploymentMode: incremental
