@@ -50,4 +50,15 @@ jobs:
             location=westus3
           deploymentMode: incremental
 
-      - run: echo ${{ steps.storageAccountDeploy.outputs.blobUri }}
+      # - run: echo ${{ steps.storageAccountDeploy.outputs.blobUri }}
+      
+      - name: Deploy Virtual Machine
+        uses: Azure/arm-deploy@v1
+        with:
+          scope: resourcegroup
+          resourceGroupName: rg-github-actions
+          subscriptionId: 7bbeb4e8-a5e2-43d4-895e-ee47d0f76020
+          template: ./arm-templates/virtual-machine.json
+          parameters: 
+            adminPassword="My$ecureP@ssword!"
+          deploymentMode: incremental
