@@ -18,9 +18,17 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Deploy Resource Group
-        uses: Azure/cli@v1
-        with:
-          inlinescript: |
-            az deployment sub create --location "westus2" --template-file ./arm-templates/resource-group.json
+      # - name: Deploy Resource Group (with azure cli)
+      #   uses: Azure/cli@v1
+      #   with:
+      #     inlinescript: |
+      #       az deployment sub create --location "westus2" --template-file ./arm-templates/resource-group.json
 
+      - name: Deploy Resource Group
+        uses: Azure/arm-deploy@v1
+        with:
+          scope: subscription
+          subscriptionId: 7bbeb4e8-a5e2-43d4-895e-ee47d0f76020
+          region: westus3
+          template: ./arm-templates/resource-group.json
+          deploymentName: rg-github-actions
