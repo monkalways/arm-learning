@@ -29,6 +29,7 @@ jobs:
         with:
           scope: subscription
           subscriptionId: 7bbeb4e8-a5e2-43d4-895e-ee47d0f76020
+          region: uswest2
           template: ./arm-templates/resource-group.json
           deploymentName: rg-github-actions
 
