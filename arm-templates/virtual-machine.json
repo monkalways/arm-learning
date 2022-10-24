@@ -102,7 +102,7 @@
       },
       "properties": {
         "hardwareProfile": {
-          "vmSize": "Standard_DC2s_v3"
+          "vmSize": "B1s"
         },
         "osProfile": {
           "computerName": "ubuntuVM1",
