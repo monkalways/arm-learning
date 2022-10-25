@@ -11,6 +11,7 @@ env:
 
 jobs:
   bicepDeployStaging:
+    name: Deploy to Staging
     runs-on: ubuntu-latest
 
     env:
@@ -53,6 +54,8 @@ jobs:
           deploymentMode: incremental
 
   bicepDeployProduction:
+    name: Deploy to Production
+    needs: bicepDeployStaging
     runs-on: ubuntu-latest
 
     env:
