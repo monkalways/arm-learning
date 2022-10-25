@@ -31,7 +31,7 @@ jobs:
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ env.subscription_id }}
-        resourceGroupName: ${{ env.azure_region }}
+        region: ${{ env.azure_region }}
         template: ./bicep-templates/resource-group.bicep
         parameters: 
           location=${{ env.location }}
