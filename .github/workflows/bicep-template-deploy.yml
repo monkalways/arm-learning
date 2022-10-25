@@ -1,0 +1,40 @@
+name: "Bicep Deploy Workflow"
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  subscription_id: 7bbeb4e8-a5e2-43d4-895e-ee47d0f76020
+  azure_region: westus2
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      resource_group_name: bicep-rg
+
+    steps:
+
+      # Checkout code
+    - uses: actions/checkout@main
+
+      # Log into Azure
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # Deploy Bicep file
+    - name: deploy resource group
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ env.subscription_id }}
+        resourceGroupName: ${{ env.azure_region }}
+        template: ./bicep-templates/resource-group.bicep
+        parameters: 
+          location=${{ env.location }}
+          resourceGroupName=${{ env.resource_group_name }}
+        deploymentName: ${{ env.resource_group_name }}
+        
