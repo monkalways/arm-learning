@@ -15,6 +15,7 @@ jobs:
 
     env:
       resource_group_name: bicep-rg
+      location: westus2
 
     steps:
 
