@@ -1,15 +1,16 @@
 name: GitHub Actions Demo
-on: push
+on: 
+  workflow_dispatch:
 jobs:
   Example-Actions-Job:
     name: Exploring Github Actions
     runs-on: ubuntu-latest
     steps:
-      - run echo "The job was triggered by a ${{ github.event_name }} event."
+      - run: echo "The job was triggered by a ${{ github.event_name }} event."
       
-      - run echo "This job is now running on a ${{ runner.os }} server hosted by GitHub"
+      - run: echo "This job is now running on a ${{ runner.os }} server hosted by GitHub"
       
-      - run echo "The name of your branchis ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - run: echo "The name of your branchis ${{ github.ref }} and your repository is ${{ github.repository }}."
       
       - name: Checkout repository code
         uses: actions/checkout@v2
